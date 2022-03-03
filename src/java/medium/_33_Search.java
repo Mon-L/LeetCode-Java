@@ -4,7 +4,7 @@ package medium;
  * 33. 搜索旋转排序数组
  * https://leetcode-cn.com/problems/search-in-rotated-sorted-array/
  */
-public class _22_Search {
+public class _33_Search {
 
     public int search(int[] nums, int target) {
         if (nums.length == 1) {
@@ -36,11 +36,11 @@ public class _22_Search {
     }
 
     public static void main(String[] args) {
-        System.out.println(new _22_Search().search(new int[]{1}, 0));
-        System.out.println(new _22_Search().search(new int[]{1, 3}, 0));
-        System.out.println(new _22_Search().search(new int[]{4, 5, 6, 7, 0, 1, 2}, 0));
-        System.out.println(new _22_Search().search(new int[]{4, 5, 6, 7, 8, 0, 1, 2}, 1));
-        System.out.println(new _22_Search().search(new int[]{4, 5, 6, 7, 8, 0, 1, 2}, 7));
-        System.out.println(new _22_Search().search(new int[]{4, 5, 6, 7, 8, 0, 1, 2}, 9));
+        System.out.println(new _33_Search().search(new int[]{1}, 0));
+        System.out.println(new _33_Search().search(new int[]{1, 3}, 0));
+        System.out.println(new _33_Search().search(new int[]{4, 5, 6, 7, 0, 1, 2}, 0));
+        System.out.println(new _33_Search().search(new int[]{4, 5, 6, 7, 8, 0, 1, 2}, 1));
+        System.out.println(new _33_Search().search(new int[]{4, 5, 6, 7, 8, 0, 1, 2}, 7));
+        System.out.println(new _33_Search().search(new int[]{4, 5, 6, 7, 8, 0, 1, 2}, 9));
     }
 }
