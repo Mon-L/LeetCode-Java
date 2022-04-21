@@ -21,41 +21,46 @@ import java.util.LinkedList;
  */
 public class _385_Deserialize {
 
-    //"[123,[456,[789]]]"
+    //"[123]"
+    //[123,[456,[789]]]
     public NestedInteger deserialize(String s) {
+        if (s.length() == 0) return new NestedInteger();
+        if (s.charAt(0) != '[') return new NestedInteger(Integer.parseInt(s));
+
         Deque<NestedInteger> deque = new LinkedList<>();
-        char[] chars = s.toCharArray();
-
-        if (chars.length == 0) return new NestedInteger();
-        if (chars[0] != '[') return new NestedInteger(Integer.parseInt(s));
-
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < chars.length; i++) {
-            char ch = chars[i];
-            if (ch == '-' || (ch >= 48 && ch <= 57)) {
-                sb.append(ch);
-            } else if (ch == ',') {
-                if (sb.length() != 0) {
-                    Integer num = Integer.parseInt(sb.toString());
-                    sb.delete(0, sb.length());
-
-                    deque.peek().add(new NestedInteger(num));
-                }
-            } else if (ch == '[') {
+        for (int l = 0, r = 0; r < s.length(); r++) {
+            if (s.charAt(r) == '[') {
                 deque.push(new NestedInteger());
-            } else if (ch == ']') {
-                if (sb.length() != 0) {
-                    Integer num = Integer.parseInt(sb.toString());
-                    sb.delete(0, sb.length());
+                l++;
+            } else if (s.charAt(r) == ']') {
+                if (l != r) {
+                    int num = Integer.parseInt(s.substring(l, r));
                     deque.peek().add(new NestedInteger(num));
+                    l = r;
                 }
 
                 if (deque.size() > 1) {
                     NestedInteger ni = deque.poll();
                     deque.peek().add(ni);
                 }
+
+                l++;
+            } else if (s.charAt(r) == ',') {
+                if (l != r) {
+                    int num = Integer.parseInt(s.substring(l, r));
+                    deque.peek().add(new NestedInteger(num));
+                    l = r;
+                }
+                l++;
             }
         }
+
         return deque.poll();
+    }
+
+    public static void main(String[] args) {
+        // NestedInteger ret1 = new _385_Deserialize().deserialize("[123]");
+        NestedInteger ret2 = new _385_Deserialize().deserialize("[123,[456],789]");
+        System.out.println(new Object());
     }
 }
