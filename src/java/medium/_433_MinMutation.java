@@ -4,49 +4,39 @@ import java.util.*;
 
 public class _433_MinMutation {
 
-    private final char[] directions = new char[]{'A', 'C', 'G', 'T'};
-
     public int minMutation(String start, String end, String[] bank) {
-        if (bank.length == 0) return -1;
+        Set<String> banks = new HashSet<>();
+        Collections.addAll(banks, bank);
 
-        Set<String> notUsed = new HashSet<>(Arrays.asList(bank));
-        notUsed.add(start);
+        Queue<String> deque = new LinkedList<>();
+        deque.add(start);
 
         int count = 0;
-        Deque<String> deque = new LinkedList<>();
-
-        deque.add(start);
-        notUsed.remove(start);
-
         while (!deque.isEmpty()) {
+            count++;
             int size = deque.size();
-            while (size-- > 0) {
-                String curr = deque.pollFirst();
-                char[] chars = curr.toCharArray();
+            for (int i = 0; i < size; i++) {
+                String head = deque.poll();
 
-                if (curr.equals(end)) {
-                    return count;
-                }
-
-                for (int i = 0; i < chars.length; i++) {
-                    char old = chars[i];
-
-                    for (char direction : directions) {
-                        if (old == direction) {
-                            continue;
+                Set<String> needRemoved = new HashSet<>();
+                for (String b : banks) {
+                    int diff = 0;
+                    for (int j = 0; j < head.length(); j++) {
+                        if (head.charAt(j) != b.charAt(j)) {
+                            diff++;
                         }
-                        chars[i] = direction;
-                        String temp = new String(chars);
-                        if (notUsed.contains(temp)) {
-                            deque.addLast(temp);
-                            notUsed.remove(temp);
-                        }
-                        chars[i] = old;
+                    }
+
+                    if (diff == 1) {
+                        if (b.equals(end)) return count;
+                        deque.add(b);
+                        needRemoved.add(b);
                     }
                 }
+                banks.removeAll(needRemoved);
             }
-            count++;
         }
+
         return -1;
     }
 
@@ -59,6 +49,25 @@ public class _433_MinMutation {
         String start = "AACCGGTT";
         String end = "AACCGGTA";
         String[] bank = new String[]{"AACCGGTA"};
+        System.out.println(new _433_MinMutation().minMutation(start, end, bank));
+
+        /**
+         * 输入：start = "AACCGGTT", end = "AAACGGTA", bank = ["AACCGGTA","AACCGCTA","AAACGGTA"]
+         * 输出：2
+         */
+        start = "AACCGGTT";
+        end = "AAACGGTA";
+        bank = new String[]{"AACCGGTA", "AACCGCTA", "AAACGGTA"};
+        System.out.println(new _433_MinMutation().minMutation(start, end, bank));
+
+        /**
+         * 输入：start = "AAAAACCC", end = "AACCCCCC", bank = ["AAAACCCC","AAACCCCC","AACCCCCC"]
+         * 输出：3
+         *
+         */
+        start = "AAAAACCC";
+        end = "AACCCCCC";
+        bank = new String[]{"AAAACCCC", "AAACCCCC", "AACCCCCC"};
         System.out.println(new _433_MinMutation().minMutation(start, end, bank));
     }
 }
